@@ -5,10 +5,11 @@
 #include "led_mode.h"
 
 class Fire : public LedMode {
-private:
+   private:
     ExpandedNeoPixel& neopixel;
     uint8_t red, green, blue;
-public:
+
+   public:
     Fire(ExpandedNeoPixel& neopixel) : neopixel(neopixel) {
         red = 0;
         green = 0;
@@ -18,7 +19,6 @@ public:
     void loop() override;
     void startup() override;
     void shutdown() override;
-
 };
 
-#endif // FIRE_H
+#endif  // FIRE_H

@@ -5,12 +5,13 @@
 #include "led_mode.h"
 
 class RainbowWheel : public LedMode {
-private:
+   private:
     ExpandedNeoPixel& neopixel;
     uint8_t red, green, blue;
 
     uint32_t Wheel(byte wheelPos);
-public:
+
+   public:
     RainbowWheel(ExpandedNeoPixel& neopixel) : neopixel(neopixel) {
         red = 0;
         green = 0;
@@ -22,4 +23,4 @@ public:
     void shutdown() override;
 };
 
-#endif // RAINBOW_WHEEL_H
+#endif  // RAINBOW_WHEEL_H

@@ -1,25 +1,22 @@
+#include "breathing.h"
+
 #include "ExpandedNeoPixel.h"
 #include "led_mode.h"
-#include "breathing.h"
 
 static uint32_t prevMillis = 0;
 static bool toTarget = true;
 void Breathing::loop() {
-
-    if(millis() - prevMillis >= delayMs){
+    if (millis() - prevMillis >= delayMs) {
         prevMillis = millis();
-        if(toTarget) {
+        if (toTarget) {
             neopixel.setAllPixelsColorWithDelay(targetColor, delayMs);
             toTarget = false;
         } else {
             neopixel.setAllPixelsColorWithDelay(sourceColor, delayMs);
             toTarget = true;
         }
-        
-        
     }
 }
-
 
 void Breathing::startup() {
     for (uint8_t i = 0; i < MAX_PIXELS; i++) {
