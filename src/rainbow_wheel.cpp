@@ -17,7 +17,7 @@ void RainbowWheel::loop() {
             uint32_t color = Wheel((i + wheelPos) % 256);
             
             // Set the color of the current LED
-            neopixel.setPixelColor(i, Colour(color));
+            neopixel.setPixelColor(i, color);
         }
         
         // Show the updated colors on the neopixel

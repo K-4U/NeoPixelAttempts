@@ -10,13 +10,12 @@ void Fire::loop() {
     static uint32_t prevMillis = 0;
     const uint16_t delayTime = 100; // Adjust this value to control the speed of the fire effect
 
-
     // Check if enough time has passed to update the fire effect
     if (millis() - prevMillis >= delayTime) {
         prevMillis = millis();
         for (uint8_t i = 0; i < MAX_PIXELS; i++) {
             uint8_t flicker = random(0, 10);
-            neopixel.setPixelColor(i, Colour(fire_colors[flicker]));
+            neopixel.setPixelColorWithDelay(i, fire_colors[flicker], delayTime);
         }
     }
 }
@@ -24,7 +23,7 @@ void Fire::loop() {
 
 void Fire::startup() {
     for (uint8_t i = 0; i < MAX_PIXELS; i++) {
-        neopixel.setPixelColor(i, Colour(255, 165, 0));
+        neopixel.setPixelColor(i, neopixel.Color(255, 165, 0));
         neopixel.show();
         delay(100);
     }

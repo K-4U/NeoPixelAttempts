@@ -2,7 +2,7 @@
 #include "ExpandedNeoPixel.h"
 #include <vector.h>
 #include "led_mode.h"
-#include "purple_breathing.h"
+#include "breathing.h"
 #include "rainbow_wheel.h"
 #include "fire.h"
 
@@ -12,36 +12,33 @@
 #define DEBUG_LED_PIN 13
 
 ExpandedNeoPixel jewel = ExpandedNeoPixel(MAX_PIXELS, LED_DATA_PIN, NEO_GRB + NEO_KHZ800);
-LedMode* modes[] = {new PurpleBreathing(jewel), new RainbowWheel(jewel), new Fire(jewel)};
+LedMode* modes[] = {new Breathing(jewel, jewel.Color(80, 0, 80), jewel.Color(255, 0, 255), 1000),
+ new RainbowWheel(jewel),
+  new Fire(jewel),
+   new Breathing(jewel, jewel.Color(128, 128, 0), jewel.Color(0, 255, 255), 1000),
+   new Breathing(jewel, jewel.Color(0, 128, 0), jewel.Color(0, 255, 0), 10000)
+   };
+static bool buttonPressed = false;
+uint16_t ledOn = 0;
+uint8_t modeIndex = 0;
+
 
 void setup()
 {
-  // Initialize serial communication
-  Serial.begin(256000);
-  // while (!Serial) {
-    ; // Wait for serial port to connect
-  // }
-  Serial.println("Serial communication initialized");
-  // modes.push_back(new PurpleBreathing(jewel));
-  // modes.push_back(new RainbowWheel(jewel));
-
-  // Set the button pin as an input
+   // Set the button pin as an input
   pinMode(BUTTON_PIN, INPUT);
 
   // Set the LED pin as an output
   pinMode(DEBUG_LED_PIN, OUTPUT);
 
   digitalWrite(DEBUG_LED_PIN, 1);
-  // Send a message over UART
-  // Serial.println("Arduino has started");
-  // Serial.println("Defining jewel");
 
   jewel.begin();
   jewel.show();
+  //Do a startup animation
   for (uint8_t i = 0; i < MAX_PIXELS; i++)
   {
-    // Serial << "Setting " << i << " to white" << '\n';
-    jewel.setPixelColor(i, Colour(0, 255, 0));
+    jewel.setPixelColor(i, jewel.Color(0, 255, 0));
     jewel.show();
     delay(100);
   }
@@ -49,12 +46,10 @@ void setup()
   jewel.clear();
   jewel.show();
   digitalWrite(DEBUG_LED_PIN, 0);
-  // jewel.setAllPixelsColorWithDelay(jewel.Color(0, 255, 0), 1000);
-}
 
-static bool buttonPressed = false;
-uint16_t ledOn = 0;
-uint8_t modeIndex = 0;
+  //Do the startup of the first mode
+  modes[modeIndex]->startup();
+}
 
 bool isButtonPressed() {
   // Read the state of the button
